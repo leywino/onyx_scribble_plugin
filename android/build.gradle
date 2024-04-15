@@ -1,0 +1,121 @@
+group 'com.leywin.onyx_scribble'
+version '1.0-SNAPSHOT'
+
+ repositories {
+        google()
+        mavenCentral()
+        maven {
+            url "http://repo.boox.com/repository/maven-public/"
+            allowInsecureProtocol = true
+        }
+    }
+
+buildscript {
+    ext.kotlin_version = '1.7.10'
+    repositories {
+        google()
+        mavenCentral()
+        maven {
+            url "http://repo.boox.com/repository/maven-public/"
+            allowInsecureProtocol = true
+        }
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.3.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+   
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven {
+            url "http://repo.boox.com/repository/maven-public/"
+            allowInsecureProtocol = true
+        }
+    }
+    
+}
+
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+android {
+    if (project.android.hasProperty("namespace")) {
+        namespace 'com.leywin.onyx_scribble'
+    }
+
+    compileSdkVersion 33
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+
+
+      packagingOptions {
+        pickFirst '**/*.so'
+
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+        test.java.srcDirs += 'src/test/kotlin'
+    }
+
+    defaultConfig {
+        minSdkVersion 29
+    }
+
+    dependencies {
+
+        implementation('com.onyx.android.sdk:onyxsdk-device:1.2.26') {
+            exclude group: 'com.android.support', module: 'support-compat'
+        }
+
+        implementation('com.onyx.android.sdk:onyxsdk-pen:1.4.8') {
+            exclude group: 'com.android.support', module: 'support-compat'
+            exclude group: 'com.android.support', module: 'appcompat-v7'
+        }
+
+        implementation('com.onyx.android.sdk:onyxsdk-base:1.6.42') {
+            exclude group: 'com.android.support', module: 'support-compat'
+            exclude group: 'com.android.support', module: 'appcompat-v7'
+        }
+
+        // implementation fileTree(dir: 'libs', include: ['*.aar'])
+
+        implementation files('C:/Users/leywi/OneDrive/Documents/development/flutter/bin/cache/artifacts/engine/android-x64/flutter.jar')
+
+
+        implementation("org.lsposed.hiddenapibypass:hiddenapibypass:4.3")
+
+        implementation group: 'io.reactivex.rxjava2', name: 'rxjava', version: '2.2.21'
+        implementation group: 'io.reactivex.rxjava2', name: 'rxandroid', version: '2.1.1'
+        testImplementation 'org.jetbrains.kotlin:kotlin-test'
+        testImplementation 'org.mockito:mockito-core:5.0.0'
+    }
+
+    testOptions {
+        unitTests.all {
+            useJUnitPlatform()
+
+            testLogging {
+               events "passed", "skipped", "failed", "standardOut", "standardError"
+               outputs.upToDateWhen {false}
+               showStandardStreams = true
+            }
+        }
+    }
+}

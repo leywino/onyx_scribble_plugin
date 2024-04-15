@@ -1,0 +1,6 @@
+package com.leywin.onyx_scribble_example
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity: FlutterActivity() {
+}
